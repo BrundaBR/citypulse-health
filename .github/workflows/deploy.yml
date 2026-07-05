@@ -79,7 +79,7 @@ jobs:
             --region "$REGION" \
             --platform managed \
             --allow-unauthenticated \
-            --service-account "citypulse-health-run@${PROJECT_ID}.iam.gserviceaccount.com" \
+            --service-account "${SERVICE_NAME}-run@${PROJECT_ID}.iam.gserviceaccount.com" \
             --update-env-vars "APP_ENV=${APP_ENV:-production}"
 
       - name: Print deployed URL
@@ -105,6 +105,7 @@ jobs:
     env:
       REGION: ${{ vars.GCP_REGION }}
       SERVICE_NAME: ${{ vars.GCP_FRONTEND_SERVICE_NAME || 'citypulse-health-frontend' }}
+      BACKEND_SERVICE_NAME: ${{ vars.GCP_SERVICE_NAME }}
       REPO_NAME: ${{ vars.GCP_REPO_NAME }}
       PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
       BACKEND_URL: ${{ needs.deploy.outputs.backend_url }}
@@ -140,7 +141,7 @@ jobs:
             --region "$REGION" \
             --platform managed \
             --allow-unauthenticated \
-            --service-account "citypulse-health-2026-run@${PROJECT_ID}.iam.gserviceaccount.com" \
+            --service-account "${BACKEND_SERVICE_NAME}-run@${PROJECT_ID}.iam.gserviceaccount.com" \
             --set-env-vars "NEXT_PUBLIC_BACKEND_URL=${BACKEND_URL}"
 
       - name: Print deployed frontend URL
